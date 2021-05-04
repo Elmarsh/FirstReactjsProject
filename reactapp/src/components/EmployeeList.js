@@ -2,7 +2,7 @@ import Employee from './Employee';
 import AddForm from './AddForm';
 import { EmployeeContext } from '../context/EmployeeContext'
 import { useContext, useState, useEffect } from 'react';
-import { Button,Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 
 
 const EmployeeList = () => {
@@ -11,10 +11,10 @@ const EmployeeList = () => {
 
     const [show, setShow] = useState(false);
 
-    const handleShow = () =>{setShow(true)};
-    const handleClose = () =>{setShow(false)};
+    const handleShow = () => { setShow(true) };
+    const handleClose = () => { setShow(false) };
 
-    
+
 
     // komponentde bir deyisiklik olsa modul tekrar baglansin (render edir);
     useEffect(() => {
@@ -53,13 +53,13 @@ const EmployeeList = () => {
 
 
 
-            <Modal show ={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     Add Employee
                 </Modal.Header>
 
                 <Modal.Body>
-                    <AddForm/>
+                    <AddForm />
                 </Modal.Body>
 
                 <Modal.Footer>
