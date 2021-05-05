@@ -2,17 +2,31 @@ import Employee from './Employee';
 import AddForm from './AddForm';
 import { EmployeeContext } from '../context/EmployeeContext'
 import { useContext, useState, useEffect } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal,Alert } from 'react-bootstrap';
 
 
 const EmployeeList = () => {
 
     const { employees } = useContext(EmployeeContext);
 
+
+
+
+    // modal setState
     const [show, setShow] = useState(false);
 
     const handleShow = () => { setShow(true) };
     const handleClose = () => { setShow(false) };
+
+
+
+    // alert setState
+    const [showAlert, setShowAlert] = useState(false)
+
+
+
+
+
 
 
 
@@ -36,6 +50,11 @@ const EmployeeList = () => {
                     </div>
                 </div>
             </div>
+
+            <Alert show={showAlert} variant="success" onClose={() => setShow(false)} dismissible>
+                Employee List successfully updated!
+            </Alert>
+
             <table className="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -48,12 +67,12 @@ const EmployeeList = () => {
                 </thead>
                 <tbody>
                     {
-                        employees.map((employee)=>(
+                        employees.sort((a,b)=>a.name.localeCompare(b.name)).map((employee) => (
 
-                            <tr key = {employee.id}>
+                            <tr key={employee.id}>
                                 <Employee employee={employee} />
                             </tr>
-                               
+
                         ))
                     }
                 </tbody>
@@ -82,3 +101,7 @@ const EmployeeList = () => {
 
 
 export default EmployeeList;
+
+
+// sort((a,b)=>a.name.localeCompare(b.name))  // 1.yol a-dan b-ye siralamaq 
+// sort((a,b)=>a.name < b.name ? -1:1 )       // 2.yol

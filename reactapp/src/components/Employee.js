@@ -8,7 +8,7 @@ import EditForm from './EditForm';
 const Employee = ({ employee }) => {
 
 
-
+    // delete employeContext
     const { deleteEmployee } = useContext(EmployeeContext)
 
 
