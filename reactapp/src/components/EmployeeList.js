@@ -2,17 +2,19 @@ import Employee from './Employee';
 import AddForm from './AddForm';
 import { EmployeeContext } from '../context/EmployeeContext'
 import { useContext, useState, useEffect } from 'react';
-import { Button, Modal,Alert } from 'react-bootstrap';
+import { Button, Modal, Alert } from 'react-bootstrap';
+import Pagination from './Pagination'
+
 
 
 const EmployeeList = () => {
 
-    const { employees } = useContext(EmployeeContext);
+    const { sortedEmployees } = useContext(EmployeeContext);
 
 
 
 
-    // modal setState
+    // modal useState
     const [show, setShow] = useState(false);
 
     const handleShow = () => { setShow(true) };
@@ -20,22 +22,47 @@ const EmployeeList = () => {
 
 
 
-    // alert setState
+    // alert useState
     const [showAlert, setShowAlert] = useState(false)
+    // const handleShowAlert = () =>setShowAlert(true);
+
+
+    const handleShowAlert = () => {
+        setShowAlert(true)
+        setTimeout(() => {
+            setShowAlert(false)
+        }, 2000);
+    }
 
 
 
 
 
-
-
-
-    // komponentde bir deyisiklik olsa modul tekrar baglansin (render edir);
     useEffect(() => {
+        handleClose()
         return () => {
-            handleClose()
+            handleShowAlert(true)
         }
-    }, [employees])
+    }, [sortedEmployees])
+
+
+
+
+
+    // pagination sayfalama useState
+
+    const [currentPage, setcurrentPage] = useState(1);
+    const [employeesPerPage] = useState(2);
+
+     
+    const indexOfLastEmployee = currentPage * employeesPerPage;
+    const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
+    const currentEmployees = sortedEmployees.slice(indexOfFirstEmployee, indexOfLastEmployee);
+    const totalPagesNum = Math.ceil(sortedEmployees.length / employeesPerPage);
+
+
+
+
 
 
     return (
@@ -51,7 +78,7 @@ const EmployeeList = () => {
                 </div>
             </div>
 
-            <Alert show={showAlert} variant="success" onClose={() => setShow(false)} dismissible>
+            <Alert show={showAlert} variant="success" onClose={() => setShowAlert(false)} dismissible>
                 Employee List successfully updated!
             </Alert>
 
@@ -67,7 +94,7 @@ const EmployeeList = () => {
                 </thead>
                 <tbody>
                     {
-                        employees.sort((a,b)=>a.name.localeCompare(b.name)).map((employee) => (
+                        currentEmployees.map((employee) => (
 
                             <tr key={employee.id}>
                                 <Employee employee={employee} />
@@ -78,6 +105,13 @@ const EmployeeList = () => {
                 </tbody>
             </table>
 
+            <Pagination
+             pages = {totalPagesNum} 
+             setcurrentPage ={setcurrentPage}
+            
+             currentEmployees ={currentEmployees}
+             sortedEmployees ={sortedEmployees}
+            />
 
 
             <Modal show={show} onHide={handleClose}>
